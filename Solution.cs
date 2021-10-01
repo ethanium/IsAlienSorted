@@ -1,39 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LeetCode
+{
     public class Solution
     {
         public bool IsAlienSorted(string[] words, string order)
         {
             List<AlienTransliteration> transliterations = new List<AlienTransliteration>();
             int asciiCode = 97;
-            foreach (char alien in order)
+            foreach (char cipher in order)
             {
                 AlienTransliteration transliteration = new AlienTransliteration();
-                transliteration.Alien = alien;
-                transliteration.Human = (char)asciiCode;
+                transliteration.Cipher = cipher;
+                transliteration.Plain = (char)asciiCode;
                 transliterations.Add(transliteration);
                 asciiCode += 1;
             }
 
-            List<string> humanWords = new List<string>();
+            List<string> plainWords = new List<string>();
             foreach (string word in words)
             {
-                string humanWord = "";
-                foreach (char alien in word)
+                string plainWord = "";
+                foreach (char cipher in word)
                 {
-                    AlienTransliteration transliteration = transliterations.FirstOrDefault(x => x.Alien == alien);
+                    AlienTransliteration transliteration = transliterations.FirstOrDefault(x => x.Cipher == cipher);
                     if (transliteration != null)
                     {
-                        humanWord += transliteration.Human;
+                        plainWord += transliteration.Plain;
                     }
                 }
-                humanWords.Add(humanWord);
+                plainWords.Add(plainWord);
             }
 
-            return humanWords.SequenceEqual(humanWords.OrderBy(x => x));
+            return plainWords.SequenceEqual(plainWords.OrderBy(x => x));
         }
     }
 
     public class AlienTransliteration
     {
-        public char Alien { get; set; }
-        public char Human { get; set; }
+        public char Cipher { get; set; }
+        public char Plain { get; set; }
     }
+}
